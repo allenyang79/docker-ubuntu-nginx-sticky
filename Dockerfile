@@ -72,8 +72,4 @@ RUN cd nginx-1.9.15 && ./configure \
     --add-module=../nginx-sticky-module \
     && make && make install
 
-#  --with-http_spdy_module \
-#  --sbin-path=/usr/sbin/nginx --conf-path=/usr/local/nginx/nginx.conf
-#  --pid-path=/usr/local/nginx/nginx.pid
-
 CMD ["nginx", "-g", "'daemon off;'"]

@@ -6,38 +6,48 @@ RUN apt-get install vim wget curl make build-essential -y
 
 WORKDIR /usr/src
 
-# pcre
-RUN wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.gz -O pcre.tar.gz && mkdir pcre && tar -zxf pcre.tar.gz -C pcre --strip-components=1
-# && cd pcre-8.41 && ./configure && make && make install
-
-# zlib
-RUN wget http://zlib.net/zlib-1.2.11.tar.gz -O zlib.tar.gz && mkdir zlib && tar -zxf zlib.tar.gz -C zlib --strip-components=1
-#&& cd zlib-1.2.11 && ./configure && make && make install
-
-# openssl
-RUN wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz -O openssl.tar.gz && mkdir openssl && tar -zxf openssl.tar.gz -C openssl --strip-components=1
-# && cd openssl-1.0.2l && ./config --prefix=/usr && make && make install
-
 RUN apt-get install libgeoip-dev -y
 RUN apt-get install libxslt-dev -y
-#RUN apt-get install libgd2-xpm libgd2-xpm-dev -y
 RUN apt-get install libgd2-xpm-dev -y
 RUN apt-get install unzip -y
 RUN apt-get install libpam0g-dev -y
 
+# pcre
+RUN wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.gz -O pcre.tar.gz \
+    && mkdir pcre \
+    && tar -zxf pcre.tar.gz -C pcre --strip-components=1
+# && cd pcre-8.41 && ./configure && make && make install
+
+# zlib
+RUN wget http://zlib.net/zlib-1.2.11.tar.gz -O zlib.tar.gz \
+    && mkdir zlib \
+    && tar -zxf zlib.tar.gz -C zlib --strip-components=1
+#&& cd zlib-1.2.11 && ./configure && make && make install
+
+# openssl
+RUN wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz -O openssl.tar.gz \
+    && mkdir openssl \
+    && tar -zxf openssl.tar.gz -C openssl --strip-components=1
+# && cd openssl-1.0.2l && ./config --prefix=/usr && make && make install
+
 # nginx 3rd party module
-RUN wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip -O nginx-upstream-fair-master.zip && unzip nginx-upstream-fair-master.zip
+RUN wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip -O nginx-upstream-fair-master.zip \
+    && unzip nginx-upstream-fair-master.zip
 
 # Pluggable Authentication Module
-# RUN wget https://github.com/sto/ngx_http_auth_pam_module/archive/master.zip -O ngx_http_auth_pam_module-master.zip && unzip ngx_http_auth_pam_module-master
+# RUN wget https://github.com/sto/ngx_http_auth_pam_module/archive/master.zip -O ngx_http_auth_pam_module-master.zip \
+#    && unzip ngx_http_auth_pam_module-master
 
-RUN wget https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/master.zip -O ngx_http_substitutions_filter_module-master.zip && unzip ngx_http_substitutions_filter_module-master.zip
+RUN wget https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/master.zip -O ngx_http_substitutions_filter_module-master.zip \
+    && unzip ngx_http_substitutions_filter_module-master.zip
 
 # nginx-echo module
-# RUN wget https://github.com/openresty/echo-nginx-module/archive/master.zip -O echo-nginx-module-master.zip && unzip echo-nginx-module-master.zip
+# RUN wget https://github.com/openresty/echo-nginx-module/archive/master.zip -O echo-nginx-module-master.zip \
+#    && unzip echo-nginx-module-master.zip
 
 # sticky module
-RUN wget https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/1.2.6.tar.gz -O nginx-sticky-module.tar.gz && mkdir nginx-sticky-module && tar -xzf nginx-sticky-module.tar.gz -C nginx-sticky-module --strip-components=1
+RUN wget https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/1.2.6.tar.gz -O nginx-sticky-module.tar.gz \
+    && mkdir nginx-sticky-module && tar -xzf nginx-sticky-module.tar.gz -C nginx-sticky-module --strip-components=1
 
 # nginx
 # http://nginx.org/en/docs/configure.html

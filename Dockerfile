@@ -27,12 +27,21 @@ RUN apt-get install libpam0g-dev -y
 
 # nginx 3rd party module
 RUN wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip -O nginx-upstream-fair-master.zip && unzip nginx-upstream-fair-master.zip
-RUN wget https://github.com/sto/ngx_http_auth_pam_module/archive/master.zip -O ngx_http_auth_pam_module-master.zip && unzip ngx_http_auth_pam_module-master
+
+# Pluggable Authentication Module
+# RUN wget https://github.com/sto/ngx_http_auth_pam_module/archive/master.zip -O ngx_http_auth_pam_module-master.zip && unzip ngx_http_auth_pam_module-master
+
 RUN wget https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/master.zip -O ngx_http_substitutions_filter_module-master.zip && unzip ngx_http_substitutions_filter_module-master.zip
-RUN wget https://github.com/openresty/echo-nginx-module/archive/master.zip -O echo-nginx-module-master.zip && unzip echo-nginx-module-master.zip
+
+# nginx-echo module
+# RUN wget https://github.com/openresty/echo-nginx-module/archive/master.zip -O echo-nginx-module-master.zip && unzip echo-nginx-module-master.zip
+
+# sticky module
 RUN wget https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/1.2.6.tar.gz -O nginx-sticky-module.tar.gz && mkdir nginx-sticky-module && tar -xzf nginx-sticky-module.tar.gz -C nginx-sticky-module --strip-components=1
 
 # nginx
+# http://nginx.org/en/docs/configure.html
+# https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/
 RUN wget http://nginx.org/download/nginx-1.9.15.tar.gz
 RUN tar -zxf nginx-1.9.15.tar.gz
 RUN cd nginx-1.9.15 && ./configure \
@@ -41,14 +50,11 @@ RUN cd nginx-1.9.15 && ./configure \
     --conf-path=/etc/nginx/nginx.conf \
     --http-log-path=/var/log/nginx/access.log \
     --error-log-path=/var/log/nginx/error.log \
-    --lock-path=/var/lock/nginx.lock \
-    --pid-path=/run/nginx.pid \
-    --http-client-body-temp-path=/var/lib/nginx/body \
-    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
-    --http-proxy-temp-path=/var/lib/nginx/proxy \
-    --http-scgi-temp-path=/var/lib/nginx/scgi \
-    --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
     --with-pcre=../pcre --with-zlib=../zlib --with-openssl=../openssl \
+    --without-http_fastcgi_module \
+    --without-http_uwsgi_module \
+    --without-http_scgi_module \
+    --with-debug \
     --with-stream \
     --with-ipv6 \
     --with-http_ssl_module \
@@ -65,11 +71,14 @@ RUN cd nginx-1.9.15 && ./configure \
     --with-http_xslt_module \
     --with-http_image_filter_module \
     --with-http_dav_module \
-    --add-module=../ngx_http_auth_pam_module-master \
-    --add-module=../echo-nginx-module-master \
     --add-module=../nginx-upstream-fair-master \
     --add-module=../ngx_http_substitutions_filter_module-master \
     --add-module=../nginx-sticky-module \
     && make && make install
 
+#    --add-module=../echo-nginx-module-master \
+#    --add-module=../ngx_http_auth_pam_module-master \
+#    --http-client-body-temp-path=/var/lib/nginx/body \
+#    --http-proxy-temp-path=/var/lib/nginx/proxy \
+WORKDIR /etc/nginx
 CMD ["nginx", "-g", "'daemon off;'"]
